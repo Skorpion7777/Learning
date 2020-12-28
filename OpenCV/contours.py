@@ -1,4 +1,5 @@
 import cv2 as cv
+import numpy as np
 
 img = cv.imread('Photos/cats.jpg')
 cv.imshow('Cats', img)
@@ -40,6 +41,23 @@ contours, hierarchies = cv.findContours(canny, cv.RETR_LIST, cv.CHAIN_APPROX_SIM
 
 print(f'{len(contours)} contours(s) found!')
 print(f'{len(contours2)} contours(s) found!')
+
+#threshold
+
+ret, thresh = cv.threshold(gray,125,255, cv.THRESH_BINARY) #binarizes image
+#if pixel below 125 set to black, if above 125 it is set to white (255)
+
+contours, hierarchies = cv.findContours(thresh, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE)
+cv.imshow('Thresholded image', thresh)
+
+print(f'{len(contours)} contours(s) found!')
+
+blank = np.zeros(img.shape, dtype='uint8' )
+cv.imshow('Blank', blank)
+
+#draw the contours on blank image from thresh
+cv.drawContours(blank, contours, -1, (0,0,255), thickness=1)
+cv.imshow('Contours Drawn', blank)
 
 
 
